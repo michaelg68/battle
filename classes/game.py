@@ -26,6 +26,7 @@ class Person:
         return random.randrange(self.atkl, self.atkh)
 
     def generate_spell_damage(self, i):
+        #print("self.magic[i][\"dmg\"] -> ", str(self.magic[i]["dmg"]))
         mgl = self.magic[i]["dmg"] - 5
         mgh = self.magic[i]["dmg"] + 5
         return random.randrange(mgl, mgh)
@@ -33,7 +34,8 @@ class Person:
     def take_damage(self, dmg):
         self.hp -= dmg
         if self.hp < 0:
-            hp = 0
+            #print("self.hp is less than 0: ", self.hp, "Setting self.hp = 0")
+            self.hp = 0
         return self.hp
 
     def get_hp(self):
