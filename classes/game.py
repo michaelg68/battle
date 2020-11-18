@@ -76,6 +76,35 @@ class Person:
             print("        " + str(i) + ".", item["item"].name, ": ", item["item"].description, "(x" + str(item["quantity"]) + ")")
             i += 1
 
+    def get_enemy_stats(self):
+        hp_bar = ""
+        bar_ticks = (self.hp / self.maxhp) * 100 / 2 #divided by 2 because the bar lenght is 50 ticks, 100 / 50 = 2
+        while bar_ticks > 0:
+            hp_bar += "█"
+            bar_ticks -= 1
+        while len(hp_bar) < 50:
+            hp_bar += " "
+        hp_string = str(self.hp) + "/" + str(self.maxhp) #example: 3260/3260
+        current_hp = ""
+        if (len(hp_string)) < 11:
+            #print("length of hp_string is less than 9")
+            decreased = 11 - len(hp_string)
+            while decreased > 0:
+                current_hp += " "
+                decreased -= 1
+            current_hp += hp_string
+        else:
+            current_hp = hp_string
+        print("                     __________________________________________________ ")
+        print(bcolors.BOLD + self.name + "   " + current_hp + "|" +
+              bcolors.FAIL + hp_bar +
+              bcolors.ENDC + bcolors.BOLD + "|")
+
+
+
+
+
+
     def get_stats(self):
         hp_bar = ""
         bar_ticks = (self.hp / self.maxhp) * 100 / 4  #divided by 4 because the bar lenght is 25 ticks, which is a quarter of 100
@@ -121,8 +150,8 @@ class Person:
         else:
             current_mp = mp_string
 
-        print("                   _________________________            __________ ")
-        print(bcolors.BOLD + self.name + "   " + current_hp + "|" +
+        print("                     _________________________               __________ ")
+        print(bcolors.BOLD + self.name + "     " + current_hp + "|" +
               bcolors.OKGREEN + hp_bar +
-              bcolors.ENDC + bcolors.BOLD + "|   " + current_mp + "|" + bcolors.OKBLUE + mp_bar + bcolors.ENDC + "|")
+              bcolors.ENDC + bcolors.BOLD + "|      " + current_mp + "|" + bcolors.OKBLUE + mp_bar + bcolors.ENDC + "|")
 
