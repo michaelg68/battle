@@ -95,8 +95,34 @@ class Person:
         while len(mp_bar) < 10:
             mp_bar += " "
 
+        #calculating the lenght of the string containing the current and the max HP
+        hp_string = str(self.hp) + "/" + str(self.maxhp) #example: 3260/3260
+        current_hp = ""
+        if (len(hp_string)) < 9:
+            #print("length of hp_string is less than 9")
+            decreased = 9 - len(hp_string)
+            while decreased > 0:
+                current_hp += " "
+                decreased -= 1
+            current_hp += hp_string
+        else:
+            current_hp = hp_string
+
+        #calculating the lenght of the string containing the current and the max MP
+        mp_string = str(self.mp) + "/" + str(self.maxmp) #example: 3260/3260
+        current_mp = ""
+        if (len(mp_string)) < 7:
+            #print("length of mp_string is less than 9")
+            decreased = 7 - len(mp_string)
+            while decreased > 0:
+                current_mp += " "
+                decreased -= 1
+            current_mp += mp_string
+        else:
+            current_mp = mp_string
+
         print("                   _________________________            __________ ")
-        print(bcolors.BOLD + self.name + "   " + str(self.hp) + "/" + str(self.maxhp) + "|" +
+        print(bcolors.BOLD + self.name + "   " + current_hp + "|" +
               bcolors.OKGREEN + hp_bar +
-              bcolors.ENDC + bcolors.BOLD + "|   " + str(self.mp) + "/" + str(self.maxmp) + "|" + bcolors.OKBLUE + mp_bar + bcolors.ENDC + "|")
+              bcolors.ENDC + bcolors.BOLD + "|   " + current_mp + "|" + bcolors.OKBLUE + mp_bar + bcolors.ENDC + "|")
 
