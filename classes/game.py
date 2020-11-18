@@ -59,7 +59,7 @@ class Person:
         print("\n" + bcolors.BOLD + "    " + self.name + bcolors.ENDC)
         print(bcolors.OKBLUE + bcolors.BOLD + "    ACTIONS:" + bcolors.ENDC)
         for item in self.actions:
-            print("        " + str(i) + "." + item)
+            print("        " + str(i) + ". " + item)
             i += 1
 
     def choose_magic(self):
@@ -168,4 +168,12 @@ class Person:
               bcolors.OKGREEN + hp_bar +
               bcolors.ENDC + bcolors.BOLD + "|      " + current_mp + "|" + bcolors.OKBLUE + mp_bar + bcolors.ENDC + "|")
 
+    def choose_enemy_spell(self):
+            magic_choice = random.randrange(0, len(self.magic))
+            spell = self.magic[magic_choice]
+            magic_dmg = spell.generate_damage()
+            if self.mp < spell.cost:
+                self.choose_enemy_spell()
+            else:
+                return spell, magic_dmg
 
