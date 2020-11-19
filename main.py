@@ -24,7 +24,7 @@ hielixer = Item("MegaElixer", "elixer", "Fully restores party's HP/MP", 9999)
 grenade = Item("Grenade", "attack", "Deals 500 damage", 500)
 
 player_spells = [fire, thunder, blizzard, meteor, cure, cura]
-enemy_spell = [fire, meteor, cure]
+enemy_spells = [fire, meteor, cure]
 
 player_items = [{"item": potion, "quantity": 15},
                 {"item": hipotion, "quantity": 5},
@@ -38,9 +38,9 @@ player1 = Person("Valos:", 3260, 132, 300, 34, player_spells, player_items)
 player2 = Person("Nick :", 4160, 188, 311, 34, player_spells, player_items)
 player3 = Person("Robot:", 3089, 174, 288, 34, player_spells, player_items)
 
-enemy1 = Person("Imp  ", 1250, 130, 560, 325, enemy_spell, [])
-enemy2 = Person("Magus", 11200, 701, 525, 25, enemy_spell, [])
-enemy3 = Person("Imp  ", 1250, 130, 560, 325, enemy_spell, [])
+enemy1 = Person("Imp  ", 1250, 130, 560, 325, enemy_spells, [])
+enemy2 = Person("Magus", 11200, 701, 525, 25, enemy_spells, [])
+enemy3 = Person("Imp  ", 1250, 130, 560, 325, enemy_spells, [])
 
 players = [player1, player2, player3]
 enemies = [enemy1, enemy2, enemy3]
@@ -112,6 +112,8 @@ while running:
                 enemy = player.choose_target(enemies)
                 enemies[enemy].take_damage(magic_dmg)
                 print(bcolors.OKBLUE + "\n" + spell.name + " deals", str(magic_dmg), "points of damage to " + enemies[enemy].name.replace(" ", "") + bcolors.ENDC)
+                if enemies[enemy].get_hp() == 0:
+                    print(enemies[enemy].name.replace(" ", "") + " has died.")
 
         if index == 2:
             player.choose_item()
@@ -164,7 +166,7 @@ while running:
         print(bcolors.OKGREEN + "You win!" + bcolors.ENDC)
         running = False
     # Check if enemy won
-    elif defeated_players == 0:
+    elif defeated_players == 2:
         print(bcolors.FAIL + "You enemies have defeted you!" + bcolors.ENDC)
         running = False
 
@@ -176,13 +178,26 @@ while running:
             target = random.randrange(0, 3)
             enemy_dmg = enemy.generate_damage()
             players[target].take_damage(enemy_dmg)
-            print(enemy.name.replace(" ", "") + "attacks ", players[target].name.replace(" ", ""), "for", enemy_dmg)
+            print(enemy.name.replace(" ", ""), "attacks ", players[target].name.replace(" ", ""), "for", enemy_dmg)
         elif enemy_choice == 1:
             magic_choice = random.randrange(0, len(enemy.magic))
             spell = enemy.magic[magic_choice]
             magic_dmg = spell.generate_damage()
-            if enemy.mp < spell.cost:
+            if enemy.mp > spell.cost:
                 spell, magic_dmg = enemy.choose_enemy_spell()
+                enemy.reduce_mp(spell.cost)
+
+                if spell.type == "white":
+                    enemy .heal(magic_dmg)
+                    print(bcolors.OKBLUE + "\n" + spell.name + " heals " + enemy.name + " for", str(magic_dmg) + " HP" + bcolors.ENDC)
+                elif spell.type == "black":
+                    enemy = player.choose_target(enemies)
+                    enemies[enemy].take_damage(magic_dmg)
+                    print(bcolors.OKBLUE + "\n" + spell.name + " deals", str(magic_dmg), "points of damage to " + enemies[enemy].name.replace(" ", "") + bcolors.ENDC)
+                    if enemies[enemy].get_hp() == 0:
+                        print(enemies[enemy].name.replace(" ", "") + " has died.")
+
+
                 print("Enemy chose", spell, ". Damage is", magic_dmg)
 
 
