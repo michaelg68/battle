@@ -172,8 +172,11 @@ class Person:
             magic_choice = random.randrange(0, len(self.magic))
             spell = self.magic[magic_choice]
             magic_dmg = spell.generate_damage()
-            if self.mp < spell.cost:
-                self.choose_enemy_spell()
+            pct = self.hp / self.maxhp * 100
+            if self.mp < spell.cost or spell.type == "white" and pct > 50:
+                print("Running choose_enemy_spell again!")
+                return self.choose_enemy_spell()
             else:
+                 print("Returning spell = " + spell.name + " and magic_dmg = " + str(magic_dmg))
                 return spell, magic_dmg
 
